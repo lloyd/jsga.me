@@ -14,7 +14,7 @@ $(document).ready(function() {
 
             // allocate an iframe for each contestant
             var iframe = $("<iframe/>")
-                .addClass("bot")
+                .addClass("contestant")
                 .attr("src", "loader.html");
 
             iframe.appendTo($("body"));
