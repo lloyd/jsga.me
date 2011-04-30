@@ -1,3 +1,28 @@
 iframe.contestant {
     display: none;
 }
+
+#board {
+    width:375px;
+    height:375px;
+    margin: auto;
+}
+
+#board > div.square {
+    width: 123px;
+    height: 123px;
+    float: left;
+    font-family: 'Permanent Marker', arial, serif;
+    font-size: 100px;
+    text-align: center;
+}
+
+#board > div.square:nth-child(3n+1), #board > div.square:nth-child(3n+2) {
+    border-right: 2px solid grey;
+}
+
+#board > div.square:nth-child(n+4) {
+    border-top: 2px solid grey;
+}
+
+
