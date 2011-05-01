@@ -29,3 +29,15 @@ iframe.contestant {
     display: none;
 }
 
+div#contestants {
+    margin: 1em;
+}
+div.contestant {
+    height: 1.5em;
+}
+
+div.contestant > * {
+    margin-left: .7em;
+    float: left;
+}
+
