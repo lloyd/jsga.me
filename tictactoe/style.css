@@ -17,6 +17,15 @@ iframe.contestant {
     text-align: center;
 }
 
+div#results {
+    float: right;
+}
+
+div#results div.result > div {
+    float: left;
+    margin-right: .7em;
+}
+
 #board > div.square:nth-child(3n+1), #board > div.square:nth-child(3n+2) {
     border-right: 2px solid grey;
 }

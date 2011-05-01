@@ -59,6 +59,20 @@ $(document).ready(function() {
         }
     }
 
+    // results is player_id to [wins,losses,ties]
+    function updateResultsInDOM(results) {
+        $("#results").empty();
+        for (var pid in results) {
+            var c = contestants[pid];
+            var r = $("#templates > div.result").clone();
+            r.find("div.name").text(c.name);
+            r.find("div.wins").text(results[pid][0]);
+            r.find("div.losses").text(results[pid][1]);
+            r.find("div.ties").text(results[pid][2]);
+            $("#results").append(r);
+        }
+    }
+
     // checks board state and returns 'x', 'o', 'tie', or null
     function winner() {
         var board = [];
@@ -164,7 +178,8 @@ $(document).ready(function() {
                 j = i+1;
             }
             if (round >= NUM_ROUNDS) {
-                alert(JSON.stringify(results));
+                updateResultsInDOM(results);
+                alert("tourney complete!");
                 return 0;
             }
             // clear board
@@ -172,7 +187,7 @@ $(document).ready(function() {
             runOneGame({
                 X: ((round % 2) == 1) ? players[j] : players[i],
                 O: ((round % 2) == 1) ? players[i] : players[j] 
-            }, 1, function (status) {
+            }, 0, function (status) {
                 var X = ((round % 2) == 1) ? players[j] : players[i];
                 var O = ((round % 2) == 1) ? players[i] : players[j];
                 if (status === 'tie') {
@@ -184,10 +199,10 @@ $(document).ready(function() {
                     results[winner.id][0]++;
                     results[looser.id][1]++;
                 }                        
+                if (0 == (round % 10)) updateResultsInDOM(results);
                 runTourney();
             });
         }
         runTourney();
     });
-
 });
