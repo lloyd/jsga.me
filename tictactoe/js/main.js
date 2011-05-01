@@ -170,11 +170,11 @@ $(document).ready(function() {
             // clear board
             $("#board > div.square").text("");
             runOneGame({
-                X: (round % 1 == 1) ? players[j] : players[i],
-                O: (round % 1 == 1) ? players[i] : players[j] 
+                X: ((round % 2) == 1) ? players[j] : players[i],
+                O: ((round % 2) == 1) ? players[i] : players[j] 
             }, 1, function (status) {
-                var X = (round % 1 == 1) ? players[j] : players[i];
-                var O = (round % 1 == 1) ? players[i] : players[j];
+                var X = ((round % 2) == 1) ? players[j] : players[i];
+                var O = ((round % 2) == 1) ? players[i] : players[j];
                 if (status === 'tie') {
                     results[X.id][2]++;
                     results[O.id][2]++;
