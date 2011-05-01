@@ -25,4 +25,7 @@ iframe.contestant {
     border-top: 2px solid grey;
 }
 
+#templates {
+    display: none;
+}
 

@@ -2,9 +2,9 @@ $(document).ready(function() {
     var contestants = [];
 
     $.get("contestants/all.txt", function (data) {
-        $("#contestants").text(data);
         var contestantFiles = data.split("\n");
         for (var i = 0; i < contestantFiles.length; i++) {
+            alert(c);
             var c = $.trim(contestantFiles[i]);
             // ignore blank contestants
             if (c.length == 0) continue;
