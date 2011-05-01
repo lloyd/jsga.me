@@ -50,3 +50,6 @@ div.contestant > * {
     float: left;
 }
 
+input#startButton.disabled {
+    opacity: .5;
+}

@@ -150,6 +150,10 @@ $(document).ready(function() {
         // let's just run a tourney between the first two contestants as a proof of
         // concept
 
+        // disable tournament buttom
+        if ($(this).hasClass("disabled")) return;
+        $("#startButton").addClass("disabled");
+
         // clear board
         $("#board > div.square").text("");
 
@@ -179,7 +183,7 @@ $(document).ready(function() {
             }
             if (round >= NUM_ROUNDS) {
                 updateResultsInDOM(results);
-                alert("tourney complete!");
+                $("#startButton").removeClass("disabled");
                 return 0;
             }
             // clear board
