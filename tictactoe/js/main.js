@@ -25,11 +25,12 @@ $(document).ready(function() {
             method: "load",
             params: file,
             success: function(v) {
-                console.log("sign of life from child!");
-                contestants["player_" + (curid++).toString()] = {
+                var player_id = "player_" + (curid++).toString();
+                contestants[player_id] = {
                     name: file,
                     chan: chan,
-                    iframe: iframe
+                    iframe: iframe,
+                    id: player_id
                 };
                 updateContestantsInDOM();
             }
@@ -91,7 +92,7 @@ $(document).ready(function() {
 
     // run a single game with the players as specified in the players map, who has
     // two interesting keys, 'X' and 'O'
-    function runOneGame(players, cb) {
+    function runOneGame(players, turnDelay, cb) {
         var curPlayer = "X";
 
         function nextTurn() {
@@ -114,7 +115,7 @@ $(document).ready(function() {
                     success: function(v) {
                         $("#board > div.square:nth-child("+(v+1)+")").text(curPlayer);
                         curPlayer = (curPlayer === "X") ? "O" : "X";
-                        setTimeout(nextTurn, 700);
+                        setTimeout(nextTurn, turnDelay);
                     }
                 });
             }
@@ -140,14 +141,53 @@ $(document).ready(function() {
 
         var players = getSelectedPlayers();
 
-        // XXX: implement round robin tourney logic.
-        runOneGame({
-            X: players[0],
-            O: players[1]
-        }, function (status) {
-            if (status === 'tie') alert("Game over!  It's a tie!");
-            else alert("Game over!  " + status + " wins!");
+        var results = {};
+        players.forEach(function(x) {
+            results[x.id] = [0,0,0]; // wins, losses, ties
         });
+
+        var NUM_ROUNDS = 100;
+        var round = 0;
+        var i = 0;
+        var j = 0;
+
+        // async round robin tourney logic.
+        function runTourney() {
+            j++;
+            if (j >= players.length) {
+                i++;
+                j = i + 1;
+            }
+            if (j >= players.length) {
+                round++;
+                i = 0;
+                j = i+1;
+            }
+            if (round >= NUM_ROUNDS) {
+                alert(JSON.stringify(results));
+                return 0;
+            }
+            // clear board
+            $("#board > div.square").text("");
+            runOneGame({
+                X: (round % 1 == 1) ? players[j] : players[i],
+                O: (round % 1 == 1) ? players[i] : players[j] 
+            }, 1, function (status) {
+                var X = (round % 1 == 1) ? players[j] : players[i];
+                var O = (round % 1 == 1) ? players[i] : players[j];
+                if (status === 'tie') {
+                    results[X.id][2]++;
+                    results[O.id][2]++;
+                } else {
+                    var winner = (status == 'X') ? X : O;
+                    var looser = (status == 'X') ? O : X;
+                    results[winner.id][0]++;
+                    results[looser.id][1]++;
+                }                        
+                runTourney();
+            });
+        }
+        runTourney();
     });
 
 });
